@@ -22,8 +22,8 @@ PTV_API_KEY=<api key>
 PTV_DEVID=<devid>
 ```
 
+Update env variables by running the following command
 ```sh
-# Update env variables
 dart run build_runner build
 ```
 
