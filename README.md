@@ -27,6 +27,14 @@ Update env variables by running the following command
 dart run build_runner build
 ```
 
+Then run or build the flutter app for your favourite platform
+[Android](https://docs.flutter.dev/deployment/android)
+[iOS](https://docs.flutter.dev/deployment/ios)
+[macOS](https://docs.flutter.dev/deployment/macos)
+[Linux](https://docs.flutter.dev/deployment/linux)
+[Windows](https://docs.flutter.dev/deployment/windows)
+[Web](https://docs.flutter.dev/deployment/web)
+
 # Getting Started
 
 This project is a collection of [boilerplate](http://whatis.techtarget.com/definition/boilerplate) (template) files with resumed guidelines for `README`, `CONTRIBUTING` and `CONTRIBUTORS` documentation. It also includes a basic `ISSUE_TEMPLATE` and `PULL_REQUEST_TEMPLATE` which are now [allowed by GitHub](https://github.com/blog/2111-issue-and-pull-request-templates). All templates are filled under `.github/` folder. This `README` itself is a fork of the `README` [template](.github/README.md).
