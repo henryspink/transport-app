@@ -6,7 +6,7 @@
 [![Under Development](https://img.shields.io/badge/under-development-orange.svg)](https://github.com/cezaraugusto/github-template-guidelines) [![Public Domain](https://img.shields.io/badge/public-domain-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
 TODO:
-- idk
+- [ ] todo
 
 ## Installing
 
@@ -24,7 +24,7 @@ PTV_DEVID=<devid>
 
 Update env variables by running the following command
 ```sh
-dart run build_runner build
+$ dart run build_runner build
 ```
 
 Then run or build the flutter app for your favourite platform
@@ -34,14 +34,6 @@ Then run or build the flutter app for your favourite platform
 [Linux](https://docs.flutter.dev/deployment/linux)
 [Windows](https://docs.flutter.dev/deployment/windows)
 [Web](https://docs.flutter.dev/deployment/web)
-
-> **[?]** So, how users can get this project up and running on their machines?
-
-```sh
-# Describe it in a nice way. Code samples with installation basics works great
-$ npm install --global ghdocs
-$ ghdocs
-```
 
 # Getting Started
 
