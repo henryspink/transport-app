@@ -1,29 +1,30 @@
 <img src="logo.png" align="left" width="192px" height="192px"/>
 <img align="left" width="0" height="192px" hspace="10"/>
 
-> Template files for writing maintanable GitHub projects. Make your repo pretty!
+> PTV Transport app - name pending
 
 [![Under Development](https://img.shields.io/badge/under-development-orange.svg)](https://github.com/cezaraugusto/github-template-guidelines) [![Public Domain](https://img.shields.io/badge/public-domain-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
-So you had an idea and developed the next world's industry-changing application. You decided to open-source it because you're way cool. Now you need to educate people about your project and need some docs to get started. You got it. :alien:
-
-<br>
-<p align="center">
-<strong>Templates included:</strong>
-<a href="/.github/README.md">README</a> • <a href="/.github/CONTRIBUTING.md">CONTRIBUTING </a> • <a href="/.github/PULL_REQUEST_TEMPLATE.md">PULL REQUEST</a> • <a href="/.github/ISSUE_TEMPLATE.md">ISSUE TEMPLATE</a> • <a href="/.github/CONTRIBUTORS.md">CONTRIBUTORS</a>
-</p>
-<br>
+TODO:
+- idk
 
 ## Installing
 
 Clone this project and name it accordingly:
 
-``git clone git@github.com:cezaraugusto/github-template-guidelines.git MY-PROJECT-NAME && cd MY-PROJECT-NAME``
+``git clone https://github.com/henryspink/transport-app.git ptv-transport-app && cd ptv-transport-app``
 
-Once you have obtained an api key and devid from PTV, place them into a `.env` file in the project root like so:
+Install flutter via the installation steps for your operating system [Flutter Install](https://docs.flutter.dev/get-started/install)
+
+Once you have obtained an api key and devid from PTV, create a `.env` file in the project root and add these like so:
 ```env
 PTV_API_KEY=<api key>
 PTV_DEVID=<devid>
+```
+
+```sh
+# Update env variables
+dart run build_runner build
 ```
 
 # Getting Started
