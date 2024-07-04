@@ -2,15 +2,11 @@
 
 A new Flutter project.
 
-## Getting Started
+## Compiling From Source
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Api Key
+Once you have obtained an api key and devid from PTV, place them into a .env file in the project root like so:
+```env
+PTV_API_KEY=<api key>
+PTV_DEVID=<devid>
+```
