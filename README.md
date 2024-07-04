@@ -40,13 +40,17 @@ Then run or build the flutter app for your favourite platform
 
 > **[?]** What does this project stands for?
 
+### TODO
+
 ## Usage
 
 > **[?]** Tell contributors how to use it.
+### TODO
 
 ## Contributing
 
 > **[?]** Write some Contributing guidelines or a Contributors list (or both!). Like:
+### TODO
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
@@ -62,9 +66,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
 Check also the [list of contributors](CONTRIBUTORS.md) who helped on this project.
 
+### TODO
+
 ## Changelog :memo:
 
 > **[?]** Write here a link for your `CHANGELOG` file. It's also commonly called `HISTORY`.
+
+### TODO
 
 ## Acknowledgments :thumbsup:
 
@@ -73,13 +81,7 @@ Check also the [list of contributors](CONTRIBUTORS.md) who helped on this projec
 * [Shields.io](http://shields.io/). Definitely a must-have.
 * [Travis-CI](travis-ci.org). Another must-have. _Test and Deploy with Confidence_.
 
-## To-Do :man:
-
-> **[?]** If your project is still in an early release, a to-do list is a good thing to keep track:
-
-- [x] Include something
-- [ ] Another something
-- [ ] So on...
+### TODO
 
 ## License
 
