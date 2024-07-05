@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// import '../util/urls.dart';
+import '../util/urls.dart' as urls;
 import '../util/request.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,10 +14,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: request("/v3/disruptions"""), builder: (context, snapshot) {
+    return FutureBuilder(future: request(urls.Distruptions.all), builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
+          return Center(child: Text("Error: ${snapshot.error}"));
         }
         if (snapshot.hasData) {
           final data = snapshot.data as String;
