@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import '../env/env.dart';
-import 'urls.dart';
+import 'urls.dart' as urls;
 
 final String apiKey = Env.ptvapikey;
 final String devid = Env.ptvdevid;
@@ -16,22 +16,19 @@ String generateSignature(String req) {
   return signature.toString();
 }
 
-String getUrl(String reqUrl) {
+String getFullUrl(String reqUrl) {
   var url = reqUrl + (reqUrl.contains('?') ? '&' : '?');
   url += 'devid=$devid';
   final signature = generateSignature(url);
   url += '&signature=$signature';
-  url = "$baseUrl$url";
+  url = "${urls.baseUrl}$url";
   log(url);
   return url;
 }
 
 Future<String> request(String reqUrl) async {
-  final url = Uri.parse(getUrl(reqUrl));
-  log("$url url");
-  log("hi");
+  final url = Uri.parse(getFullUrl(reqUrl));
   final response = await client.get(url, headers: {});
-  log("hii");
   if (response.statusCode != 200) {
     log("${response.statusCode} code");
   }
