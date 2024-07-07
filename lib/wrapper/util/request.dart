@@ -3,7 +3,7 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'dart:developer';
 
-import '../env/env.dart';
+import '../../env/env.dart';
 import 'urls.dart' as urls;
 
 final String apiKey = Env.ptvapikey;
@@ -26,6 +26,20 @@ String getFullUrl(String reqUrl) {
   return url;
 }
 
+
+/// Request data from the PTV API
+/// 
+/// Takes in the request URL in the form of `/version/endpoints?params`, or a `urls` object. 
+/// 
+/// The base url and authentication are added automatically
+/// 
+/// Returns the response body as raw json
+/// 
+/// Example:
+/// ```dart
+/// request("/v3/disruptions")
+/// request(urls.Distruptions.all);
+/// ```
 Future<String> request(String reqUrl) async {
   final url = Uri.parse(getFullUrl(reqUrl));
   final response = await client.get(url, headers: {});
