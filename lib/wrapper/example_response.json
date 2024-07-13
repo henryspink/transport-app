@@ -1,0 +1,58 @@
+{
+  "runs": [
+    {
+      "run_id": 0,
+      "run_ref": "string",
+      "route_id": 0,
+      "route_type": 0,
+      "final_stop_id": 0,
+      "destination_name": "string",
+      "status": "string",
+      "direction_id": 0,
+      "run_sequence": 0,
+      "express_stop_count": 0,
+      "vehicle_position": {
+        "latitude": 0,
+        "longitude": 0,
+        "easting": 0,
+        "northing": 0,
+        "direction": "string",
+        "bearing": 0,
+        "supplier": "string",
+        "datetime_utc": "2024-07-07T03:12:48.782Z",
+        "expiry_time": "2024-07-07T03:12:48.782Z"
+      },
+      "vehicle_descriptor": {
+        "operator": "string",
+        "id": "string",
+        "low_floor": true,
+        "air_conditioned": true,
+        "description": "string",
+        "supplier": "string",
+        "length": "string"
+      },
+      "geopath": [
+        {}
+      ],
+      "interchange": {
+        "feeder": {
+          "run_ref": "string",
+          "route_id": 0,
+          "stop_id": 0,
+          "advertised": true
+        },
+        "distributor": {
+          "run_ref": "string",
+          "route_id": 0,
+          "stop_id": 0,
+          "advertised": true
+        }
+      },
+      "run_note": "string"
+    }
+  ],
+  "status": {
+    "version": "string",
+    "health": 0
+  }
+}

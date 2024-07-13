@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
+import 'dart:io';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -40,12 +41,20 @@ String getFullUrl(String reqUrl) {
 /// request("/v3/disruptions")
 /// request(urls.Distruptions.all);
 /// ```
-Future<String> request(String reqUrl) async {
-  final url = Uri.parse(getFullUrl(reqUrl));
-  final response = await client.get(url, headers: {});
+Future<Map> request(String reqUrl, String params) async {
+  String fullUrl;
+  if (params != "") {
+    fullUrl = getFullUrl("$reqUrl?$params");
+  } else {
+    fullUrl = getFullUrl(reqUrl);
+  }
+  log(fullUrl);
+  final uri = Uri.parse(fullUrl);
+  final response = await client.get(uri, headers: {});
   if (response.statusCode != 200) {
     log("${response.statusCode} code");
   }
   log("${response.body} body");
-  return response.body;
+  // await Future.delayed(const Duration(seconds: 5));
+  return jsonDecode(response.body);
 }
