@@ -1,9 +1,13 @@
 library content;
 
-export 'departures.dart';
-export 'routes.dart';
-export 'runs.dart';
+export 'departure.dart';
+export 'disruption.dart';
+export 'geopath.dart';
+export 'interchange.dart';
+export 'pattern.dart';
+export 'route.dart';
+export 'run.dart';
+// export 'service.dart';
 export 'status.dart';
+export 'stop.dart';
 export 'vehicle_info.dart';
-export 'stops.dart';
-// export 'content/departues.dart';

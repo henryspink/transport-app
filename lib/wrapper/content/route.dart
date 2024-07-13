@@ -1,5 +1,5 @@
 import 'status.dart';
-import 'runs.dart';
+import 'geopath.dart';
 
 class Route {
   Route(
@@ -27,10 +27,4 @@ class Route {
     json["routeGTFSid"],
     Geopath.fromJson(json["geopath"]),
   );
-}
-
-class Routes {
-  Routes(this.routes);
-  List<Route> routes;
-  factory Routes.fromJson(Map json) => Routes(List<Route>.generate(json['routes'].length, (i) => Route.fromJson(json['routes'][i])));
 }

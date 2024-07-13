@@ -1,10 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
-import 'dart:io';
 import 'dart:convert';
 import 'dart:developer';
 
-import '../../env/env.dart';
+import '../env/env.dart';
 import 'urls.dart' as urls;
 
 final String apiKey = Env.ptvapikey;
@@ -55,6 +54,5 @@ Future<Map> request(String reqUrl, String params) async {
     log("${response.statusCode} code");
   }
   log("${response.body} body");
-  // await Future.delayed(const Duration(seconds: 5));
   return jsonDecode(response.body);
 }

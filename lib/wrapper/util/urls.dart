@@ -3,7 +3,7 @@ const String version = "/v3";
 
 const String healthCheck = "$version/healthCheck";
 
-class Distruptions {
+class Disruptions {
   static const String all = "$version/disruptions";
   static String route(int routeId) => "$version/disruptions/route/$routeId";
   static String routeAndStop(int routeId, int stopId) => "$version/disruptions/route/$routeId/stop/$stopId";

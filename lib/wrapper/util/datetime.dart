@@ -1,3 +1,4 @@
 import 'package:intl/intl.dart';
 
 final ptvTimeFormat = DateFormat("yyyy-MM-ddTHH:mm:ssZ");
+final displayTimeFormat = DateFormat("HH:mm");

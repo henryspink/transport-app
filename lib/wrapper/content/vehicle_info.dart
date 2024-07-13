@@ -10,12 +10,12 @@ class VehiclePosition {
     this.datetimeUtc,
     this.expiryTime,
   );
-  int latitude;
-  int longitude;
-  int easting;
-  int northing;
+  double latitude;
+  double longitude;
+  double easting;
+  double northing;
   String direction;
-  int bearing;
+  double bearing;
   String supplier;
   String datetimeUtc;
   String expiryTime;
@@ -44,8 +44,8 @@ class VehicleDescriptor {
   );
   String operator;
   String id;
-  bool lowFloor;
-  bool airConditioned;
+  bool? lowFloor;
+  bool? airConditioned;
   String description;
   String supplier;
   String length;
