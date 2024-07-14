@@ -75,14 +75,13 @@ class _NextDepartureState extends State<NextDeparture> {
                 } else {
                   estimatedIn = "${expectedTimeTillDeparture.inMinutes} min${expectedTimeTillDeparture.inMinutes > 1 ? 's' : ''}";
                 }
-                log("hi");
                 return SingleChildScrollView(child: 
                   Column(
                     children: [
                     Text("Counter: $counter"),
-                    Text("Next Departure: $formatScheduledDeparture to ${pattern.run.destinationName}"),
+                    Text("Next Departure: $formatScheduledDeparture to ${pattern.runs[dep.runRef]!.destinationName}"),
                     Text("Estimated to depart in: $estimatedIn"),
-                    Text("Platform: $platNum, ${pattern.run.expressStopCount} stops skipped"),
+                    Text("Platform: $platNum, ${pattern.runs[dep.runRef]!.expressStopCount} stops skipped"),
                     ]
                   )
                 );

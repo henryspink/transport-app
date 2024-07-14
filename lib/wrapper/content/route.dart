@@ -11,13 +11,13 @@ class Route {
     this.routeGTFSid,
     this.geopath,
   );
-  ServiceStatus serviceStatus;
+  ServiceStatus? serviceStatus;
   int routeType;
   int routeId;
   String routeName;
   String routeNumber;
   String routeGTFSid;
-  Geopath geopath;
+  Geopath? geopath;
   factory Route.fromJson(Map json) => Route(
     ServiceStatus.fromJson(json["serviceStatus"]),
     json["routeType"],
