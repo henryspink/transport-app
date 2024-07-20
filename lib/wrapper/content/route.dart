@@ -19,12 +19,12 @@ class Route {
   String routeGTFSid;
   Geopath? geopath;
   factory Route.fromJson(Map json) => Route(
-    ServiceStatus.fromJson(json["serviceStatus"]),
-    json["routeType"],
-    json["routeId"],
-    json["routeName"],
-    json["routeNumber"],
-    json["routeGTFSid"],
+    json["service_status"] != null ? ServiceStatus.fromJson(json["service_status"]) : null,
+    json["route_type"],
+    json["route_id"],
+    json["route_name"],
+    json["route_number"],
+    json["route_gtfs_id"],
     Geopath.fromJson(json["geopath"]),
   );
 }

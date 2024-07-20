@@ -1,6 +1,6 @@
-import 'dart:js_interop';
+// import 'dart:js_interop';
 
-import 'disruption.dart';
+// import 'disruption.dart';
 import '../util/datetime.dart';
 
 class Departure {
@@ -24,9 +24,9 @@ class Departure {
   int runId;
   String runRef;
   int directionId;
-  JSArray disruptionIds;
-  DateTime scheduledDeparture;
-  DateTime estimatedDeparture;
+  List<int> disruptionIds;
+  DateTime? scheduledDeparture;
+  DateTime? estimatedDeparture;
   bool atPlatform;
   int platformNumber;
   String flags;
@@ -38,9 +38,9 @@ class Departure {
     json['run_id'],
     json['run_ref'],
     json['direction_id'],
-    json['disruption_ids'],
-    ptvTimeFormat.parse(json['scheduled_departure_utc'], true).toLocal(),
-    ptvTimeFormat.parse(json['estimated_departure_utc'], true).toLocal(),
+    json['disruption_ids'].map<int>((e) => e as int).toList(),
+    parseTime(json['scheduled_departure_utc']),
+    parseTime(json['estimated_departure_utc']),
     json['at_platform'] == "true",
     int.parse(json['platform_number']),
     json['flags'],
@@ -66,20 +66,20 @@ class PatternDeparture {
     this.departureSequence,
     this.departureNote,
   );
-  JSArray skippedStops;
+  List skippedStops;
   int stopId;
   int routeId;
   int runId;
   String runRef;
   int directionId;
-  List<Disruption> disruptionIds;
-  DateTime scheduledDeparture;
-  DateTime estimatedDeparture;
+  List disruptionIds;
+  DateTime? scheduledDeparture;
+  DateTime? estimatedDeparture;
   bool atPlatform;
   int platformNumber;
   String flags;
   int departureSequence;
-  String departureNote;
+  String? departureNote;
   factory PatternDeparture.fromJson(Map json) => PatternDeparture(
     json['skipped_stops'],
     json['stop_id'],
@@ -88,8 +88,8 @@ class PatternDeparture {
     json['run_ref'],
     json['direction_id'],
     json['disruption_ids'],
-    ptvTimeFormat.parse(json['scheduled_departure_utc'], true).toLocal(),
-    ptvTimeFormat.parse(json['estimated_departure_utc'], true).toLocal(),
+    parseTime(json['scheduled_departure_utc']),
+    parseTime(json['estimated_departure_utc']),
     json['at_platform'] == "true",
     int.parse(json['platform_number']),
     json['flags'],

@@ -44,7 +44,7 @@ class Interchange {
   );
   Feeder? feeder;
   Distributor? distributor;
-  factory Interchange.fromJson(json) => Interchange(
+  factory Interchange.fromJson(Map json) => Interchange(
     json['feeder'] != null ? Feeder.fromJson(json['feeder']) : null,
     json['distributor'] != null ? Distributor.fromJson(json['distributor']) : null
   );

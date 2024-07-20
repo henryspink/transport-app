@@ -1,4 +1,4 @@
-import 'dart:js_interop';
+// import 'dart:js_interop';
 
 import 'ticket.dart';
 import  'interchange.dart';
@@ -17,14 +17,14 @@ class Stop {
     this.stopName,
     this.stopLandmark,
   );
-  JSArray disruptionIds;
+  List disruptionIds;
   String stopSuburb;
   int routeType;
   double stopLatitude;
   double stopLongitude;
   int stopSequence;
   TicketInfo stopTicket;
-  Interchange interchange;
+  Interchange? interchange;
   int stopId;
   String stopName;
   String stopLandmark;
@@ -36,7 +36,7 @@ class Stop {
     json['stopLongitude'],
     json['stopSequence'],
     TicketInfo.fromJson(json['stopTicket']),
-    Interchange.fromJson(json['interchange']),
+    json['interchange'] != null ? Interchange.fromJson(json['interchange']) : null,
     json['stopId'],
     json['stopName'],
     json['stopLandmark'],
@@ -57,7 +57,7 @@ class PatternStop {
     this.stopSequence
     );
   TicketInfo stopTicket;
-  int stopDistance;
+  double stopDistance;
   String stopSuburb;
   String stopName;
   int stopId;
@@ -83,5 +83,6 @@ class PatternStop {
 Map<String, int> stopsFromStationName() {
   Map<String, int> stops = {};
   stops["laburnum"] = 1111;
+  stops["cranbourne"] = 1045;
   return stops;
 }

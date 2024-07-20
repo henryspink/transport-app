@@ -11,18 +11,18 @@ class Pattern {
   );
   List<Disruption> disruptions;
   List<PatternDeparture> departures;
-  Map<String, PatternStop> stops;
-  Map<String, Route> routes;
-  Map<String, Run> runs;
-  Map<String, Direction> directions;
+  Map<int, PatternStop> stops;
+  Map<int, Route> routes;
+  Map<int, Run> runs;
+  Map<int, Direction> directions;
   Status status;
   factory Pattern.fromJson(Map json) => Pattern(
-    json['disruptions'].map<Disruption>((disruption) => Disruption.fromJson(disruption)).toList(),
-    json['departures'].map<PatternDeparture>((departure) => PatternDeparture.fromJson(departure)).toList(),
-    json['stops'].map<PatternStop>((stop) => PatternStop.fromJson(stop)).toList(),
-    json['routes'].map<Route>((route) => Route.fromJson(route)).toList(),
-    json['runs'].map<Run>((run) => Run.fromJson(run)).toList(),
-    json['directions'].map<Direction>((direction) => Direction.fromJson(direction)).toList(),
+    [for (var disruption in json['disruptions']) Disruption.fromJson(disruption)],
+    [for (var departure in json['departures']) PatternDeparture.fromJson(departure)],
+    {for (var stop in json['stops'].values) stop['stop_id']: PatternStop.fromJson(stop)},
+    {for (var route in json['routes'].values) route['route_id']: Route.fromJson(route)},
+    {for (var run in json['runs'].values) run['run_id']: Run.fromJson(run)},
+    {for (var direction in json['directions'].values) direction['direction_id']: Direction.fromJson(direction)},
     Status.fromJson(json['status']),
   );
 }

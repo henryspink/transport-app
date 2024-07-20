@@ -1,26 +1,26 @@
-import 'dart:js_interop';
+// import 'dart:js_interop';
+// import 'dart:developer';
 
 import 'package:transport_app/wrapper/wrapper.dart';
 
 class Disruption {
-  Disruption(
-    this.disruptionId,
-    this.title,
-    this.url,
-    this.description,
-    this.disruptionStatus,
-    this.disruptionType,
-    this.publishedOn,
-    this.lastUpdated,
-    this.from,
-    this.to,
-    this.routes,
-    this.stops,
-    this.colour,
-    this.displayOnBoard,
-    this.displayStatus,
-  );
-
+  Disruption({
+    required this.disruptionId,
+    required this.title,
+    required this.url,
+    required this.description,
+    required this.disruptionStatus,
+    required this.disruptionType,
+    required this.publishedOn,
+    required this.lastUpdated,
+    required this.from,
+    required this.to,
+    required this.routes,
+    required this.stops,
+    required this.colour,
+    required this.displayOnBoard,
+    required this.displayStatus,
+  });
   int disruptionId;
   String title;
   String url;
@@ -31,27 +31,26 @@ class Disruption {
   DateTime? lastUpdated;
   DateTime? from;
   DateTime? to;
-  JSArray routes;
-  JSArray stops;
+  List routes;
+  List stops;
   String colour;
   bool displayOnBoard;
   bool displayStatus;
-
   factory Disruption.fromJson(Map json) => Disruption(
-        json['disruptionId'],
-        json['title'],
-        json['url'],
-        json['description'],
-        json['disruptionStatus'],
-        json['disruptionType'],
-        ptvTimeFormat.tryParse(json['published_on']),
-        ptvTimeFormat.tryParse(json['last_updated']),
-        ptvTimeFormat.tryParse(json['from']),
-        ptvTimeFormat.tryParse(json['to']),
-        json['routes'],
-        json['stops'],
-        json['colour'],
-        json['displayOnBoard'],
-        json['displayStatus'],
-      );
+    disruptionId:     json['disruption_id'],
+    title:            json['title'],
+    url:              json['url'],
+    description:      json['description'],
+    disruptionStatus: json['disruption_status'],
+    disruptionType:   json['disruption_type'],
+    publishedOn:      parseTime(json['published_on']),
+    lastUpdated:      parseTime(json['last_updated']),
+    from:             parseTime(json['from']),
+    to:               parseTime(json['to']),
+    routes:           json['routes'],
+    stops:            json['stops'],
+    colour:           json['colour'],
+    displayOnBoard:   json['display_on_board'],
+    displayStatus:    json['display_status'],
+  );
 }

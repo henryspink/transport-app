@@ -1,3 +1,5 @@
+import 'package:transport_app/wrapper/util/datetime.dart';
+
 class Status {
   String version;
   int health;
@@ -14,6 +16,6 @@ class ServiceStatus {
   DateTime? timestamp;
   factory ServiceStatus.fromJson(Map json) => ServiceStatus(
     json["description"],
-    DateTime.tryParse(json["timestamp"])
+    parseTime(json["timestamp"]),
     );
 }

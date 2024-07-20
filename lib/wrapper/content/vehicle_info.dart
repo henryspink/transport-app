@@ -1,3 +1,5 @@
+import 'package:transport_app/wrapper/util/datetime.dart';
+
 class VehiclePosition {
   VehiclePosition(
     this.latitude,
@@ -7,8 +9,8 @@ class VehiclePosition {
     this.direction,
     this.bearing,
     this.supplier,
-    this.datetimeUtc,
-    this.expiryTime,
+    this.time,
+    this.expiry,
   );
   double latitude;
   double longitude;
@@ -17,18 +19,18 @@ class VehiclePosition {
   String direction;
   double bearing;
   String supplier;
-  String datetimeUtc;
-  String expiryTime;
+  DateTime? time;
+  DateTime? expiry;
   factory VehiclePosition.fromJson(json) => VehiclePosition(
-      json['latitude'],
-      json['longitude'],
-      json['easting'],
-      json['northing'],
-      json['direction'],
-      json['bearing'],
-      json['supplier'],
-      json['datetime_utc'],
-      json['expiry_time'],
+    json['latitude'],
+    json['longitude'],
+    json['easting'],
+    json['northing'],
+    json['direction'],
+    json['bearing'],
+    json['supplier'],
+    parseTime(json['datetime_utc']),
+    parseTime(json['expiry_time']),
   );
 }
 

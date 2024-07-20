@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:transport_app/wrapper/content/content.dart';
+import 'package:transport_app/wrapper/util/datetime.dart';
 
 import '../wrapper/wrapper.dart' as ptv;
-import 'elements/stops.dart';
 
 class NextDeparture extends StatefulWidget {
   const NextDeparture({super.key});
@@ -16,11 +16,10 @@ class NextDeparture extends StatefulWidget {
 }
 class _NextDepartureState extends State<NextDeparture> {
   ptv.Departure? nextDeparture;
-  static int counter = 0;
+  int counter = 0;
   static String currentStation = "";
   static bool rerequest = false;
-  // static ScrollController scrollController = ScrollController();
-  static PanelController panelController = PanelController();
+  static ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -46,7 +45,6 @@ class _NextDepartureState extends State<NextDeparture> {
         }
         next = tempnext;
         pattern = await ptv.ServiceFromDeparture.getTrain(next);
-        // scrollController.animateTo((pattern.stops.values.toList().indexOf(pattern.stops[next.stopId]!) * 100), duration: const Duration(seconds: 2), curve: Curves.ease);
         controller.add((next, pattern));
         // ignore: unused_local_variable
         final timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
@@ -58,16 +56,16 @@ class _NextDepartureState extends State<NextDeparture> {
             log("hi");
             if (tempnext == null) {
               controller.addError("Getting next departure failed");
-              return;
+              // return;
             }
             next = tempnext!;
             log("hii");
             pattern = await ptv.ServiceFromDeparture.getTrain(next);
             log("${old.runRef} ${next.runRef}");
-            if ((old.runRef != next.runRef) || counter <= 1) {
+            if (old.runRef != next.runRef) {
               // new departure
               log("scrolling");
-              // scrollController.animateTo((pattern.stops.values.toList().indexOf(pattern.stops[next.stopId]!) * 100), duration: const Duration(seconds: 2), curve: Curves.ease);
+              scrollController.animateTo((pattern.stops.values.toList().indexOf(pattern.stops[next.stopId]!) * 50), duration: const Duration(seconds: 2), curve: Curves.ease);
             }
             rerequest = false;
           }
@@ -77,6 +75,45 @@ class _NextDepartureState extends State<NextDeparture> {
     );
     return controller.stream;
   }) ();
+
+  ListView stops(pattern, dep) {
+    // ScrollController controller = ScrollController(initialScrollOffset: (pattern.stops.values.toList().indexOf(pattern.stops[dep.stopId]!) * 50).toDouble());
+    return ListView.builder(
+      controller: scrollController,
+      itemCount: pattern.stops.length,
+      itemBuilder: (context, index) {
+        ThemeData theme = Theme.of(context);
+        // time stuff for each stop
+        List<Widget> time;
+        PatternDeparture patdep = pattern.departures[index];
+        if ((patdep.estimatedDeparture != null) && (patdep.estimatedDeparture!.toString() != patdep.scheduledDeparture.toString())) { // the train is late (or early idk)
+          time = [
+            Text(
+              displayTimeFormat.format(patdep.scheduledDeparture!),
+              style: const TextStyle(decoration: TextDecoration.lineThrough)
+            ),
+            const SizedBox(width: 10),
+            Text(
+              displayTimeFormat.format(patdep.estimatedDeparture!),
+              style: const TextStyle(color: Colors.red)
+            ),
+          ];
+        } else { // the train is on time or estimated time is not availiable
+          time = [Text(displayTimeFormat.format(patdep.scheduledDeparture!)),];
+        }
+        Widget times = Row(children: time,);
+        return SizedBox(
+          height: 50,
+          width: 50,
+          child: ListTile(
+            textColor: pattern.stops.values.elementAt(index).stopId == dep.stopId ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+            title: Text(pattern.stops.values.elementAt(index).stopName),
+            subtitle: times
+          ),
+        );
+      }
+    );
+  }
 
   Widget departureDetails(AsyncSnapshot snapshot) {
     ptv.Departure dep = snapshot.data!.$1;
@@ -113,83 +150,53 @@ class _NextDepartureState extends State<NextDeparture> {
     log("expectedTimeTillDeparture: ${expectedTimeTillDeparture.inSeconds}");
     log("${pattern.stops.values.toList().indexOf(pattern.stops[dep.stopId]!)} index");
 
-    // return Column(
-    //   children: [
-    //     Text("Counter: $counter"),
-    //     Text("Next Departure: $formatScheduledDeparture to ${pattern.runs.values.first.destinationName}"),
-    //     Text("Estimated to depart in: $estimatedIn"),
-    //     Text("Platform: $platNum, ${pattern.runs.values.first.expressStopCount} stop${pattern.runs.values.first.expressStopCount > 1 ? 's' : ''} skipped"),
-    //     // SizedBox(
-    //     //   height: 200,
-    //     //   width: 200,
-    //     //   child: stops(pattern, dep)
-    //     // )
-    //     ElevatedButton(
-    //       onPressed: () => showModalBottomSheet(
-    //         context: context,
-    //         builder: (context) => stopsSheet(pattern, dep),
-    //       ), 
-    //       // DraggableScrollableSheet(
-    //       //   builder: (context, scrollController) {
-    //       //     return Container(
-    //       //       child: stops(pattern, dep, scrollController),
-    //       //     );
-    //       //   },
-    //       // ),
-    //       child: const Text("test bottom sheet"))
-    //   ]
-    // );
-    return SlidingUpPanel(
-      controller: panelController,
-      minHeight: 100,
-      maxHeight: MediaQuery.of(context).size.height * 0.9,
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {setState(() {rerequest = true;});},
-            child: const Text("Reload")
-          ),
-          Text("Counter: $counter"),
-          Text("Next Departure: $formatScheduledDeparture to ${pattern.runs.values.first.destinationName}"),
-          Text("Estimated to depart in: $estimatedIn"),
-          Text("Platform: $platNum, ${pattern.runs.values.first.expressStopCount} stop${pattern.runs.values.first.expressStopCount > 1 ? 's' : ''} skipped"),
-        ]
-      ),
-      panelBuilder: (controller) => StopsSheet(
-        controller: controller,
-        panelController: panelController,
-        pattern: pattern,
-        departure: dep,
-      ),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(24.0),
-        topRight: Radius.circular(24.0),
-      )
+    return Column(
+      children: [
+        Text("Counter: $counter"),
+        Text("Next Departure: $formatScheduledDeparture to ${pattern.runs.values.first.destinationName}"),
+        Text("Estimated to depart in: $estimatedIn"),
+        Text("Platform: $platNum, ${pattern.runs.values.first.expressStopCount} stop${pattern.runs.values.first.expressStopCount > 1 ? 's' : ''} skipped"),
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: stops(pattern, dep)
+        )
+      ]
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream: updateNextDeparture, builder: (context, snapshot) { 
-      switch (snapshot.connectionState) {
-        case ConnectionState.none:
-          return const Center(child: Text("No data"));
-        case ConnectionState.waiting:
-          log("waiting");
-          return const Center(child: CircularProgressIndicator());
-        case ConnectionState.active:
-          if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          }
-          if (snapshot.hasData) {
-          return departureDetails(snapshot);
-          } else {
-            return const Center(child: Text("No data"));
-          }
-        case ConnectionState.done:
-          return const Center(child: Text("Done (should never see this :D)"));
-        }
-      }
+    return Card(
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {setState(() {rerequest = true;});},
+            child: const Text("Reload")
+          ),
+          StreamBuilder(stream: updateNextDeparture, builder: (context, snapshot) { 
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return const Center(child: Text("No data"));
+              case ConnectionState.waiting:
+                log("waiting");
+                return const Center(child: CircularProgressIndicator());
+              case ConnectionState.active:
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
+                if (snapshot.hasData) {
+                return Center(child: departureDetails(snapshot));
+                } else {
+                  return const Center(child: Text("No data"));
+                }
+              case ConnectionState.done:
+                return const Center(child: Text("Done (should never see this :D)"));
+              }
+            }
+          )
+        ]
+      ),
     );
   }
 }

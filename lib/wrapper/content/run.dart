@@ -34,7 +34,7 @@ class Run {
   VehiclePosition? vehiclePosition;
   VehicleDescriptor? vehicleDescriptor;
   Geopath geopath;
-  Interchange interchange;
+  Interchange? interchange;
   String runNote;
   factory Run.fromJson(Map json) => Run(
       json['run_id'],
@@ -50,7 +50,7 @@ class Run {
       json['vehicle_position'] != null ? VehiclePosition.fromJson(json['vehicle_position']) : null,
       json['vehicle_descriptor'] != null ? VehicleDescriptor.fromJson(json['vehicle_descriptor']) : null,
       Geopath.fromJson(json['geopath']),
-      Interchange.fromJson(json['interchange']),
+      json['interchange'] != null ? Interchange.fromJson(json['interchange']) : null,
       json['run_note'],
   );
 }

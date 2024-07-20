@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:system_theme/system_theme.dart';
 
 // import 'pages/raw.dart';
-import 'pages/home.dart';
+// import 'pages/home.dart';
+import 'app.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemTheme.fallbackColor = Colors.red;
+  await SystemTheme.accentColor.load();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: SystemTheme.accentColor.accent,
+    )
+  );
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PTV Transport App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        colorScheme: ColorScheme.fromSeed(seedColor: SystemTheme.accentColor.accent),
         useMaterial3: true,
       ),
-      // home: const RawResponse(title: 'Transport App'),
-      home: const TestDetails(title: 'Transport App'),
+      home: const TransportApp(
+        title: 'Transport App'
+      ),
     );
   }
 }
