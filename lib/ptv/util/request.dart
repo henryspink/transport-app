@@ -82,6 +82,6 @@ Future<Map> request(String reqUrl, String? params) async {
       "message": response.body
     };
   }
-  log("${response.body} body");
+  log(response.body);
   return jsonDecode(response.body);
 }

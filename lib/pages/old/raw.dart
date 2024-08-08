@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../wrapper/util/urls.dart' as urls;
-import '../wrapper/util/request.dart';
+import '../../ptv/util/urls.dart' as urls;
+import '../../ptv/util/request.dart';
 
 class RawResponse extends StatefulWidget {
   const RawResponse({super.key, required this.title});

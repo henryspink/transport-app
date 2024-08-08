@@ -1,4 +1,5 @@
-import 'package:transport_app/wrapper/content/content.dart';
+import 'package:transport_app/ptv/content/content.dart';
+
 class Pattern {
   Pattern(
     this.disruptions,

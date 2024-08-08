@@ -1,4 +1,4 @@
-import 'package:transport_app/wrapper/util/datetime.dart';
+import 'package:transport_app/ptv/util/datetime.dart';
 
 class VehiclePosition {
   VehiclePosition(

@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:transport_app/wrapper/content/content.dart';
-import 'package:transport_app/wrapper/util/datetime.dart';
+import 'package:transport_app/ptv/content/content.dart';
+import 'package:transport_app/ptv/util/datetime.dart';
 
-import '../wrapper/wrapper.dart' as ptv;
+import '../../ptv/wrapper.dart' as ptv;
 
 class NextDeparture extends StatefulWidget {
   const NextDeparture({super.key});

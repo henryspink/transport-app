@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../wrapper/wrapper.dart' as ptv;
+import '../../ptv/wrapper.dart' as ptv;
 
 class StopsSheet extends StatelessWidget {
   final ScrollController controller;
@@ -23,7 +23,7 @@ class StopsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView.builder(
     controller: controller,
-    itemCount: pattern.stops.length,
+    itemCount: pattern.stops.length + 2,
     itemBuilder: (context, index) {
       if (index == 0) {
         return SizedBox(
@@ -51,6 +51,9 @@ class StopsSheet extends StatelessWidget {
             ],
           )
         );
+      }
+      if (index == pattern.stops.length + 1) {
+        return const SizedBox(height: 100,);
       }
       index -= 1;
 
@@ -82,6 +85,70 @@ class StopsSheet extends StatelessWidget {
             textColor: pattern.stops.values.elementAt(index).stopId == departure.stopId ? theme.colorScheme.primary : theme.colorScheme.onSurface,
             title: Text(pattern.stops.values.elementAt(index).stopName, style: const TextStyle(fontSize: 20),),
             subtitle: times
+          ),
+        ),
+      );
+    }
+  );
+}
+
+class NearbyStops extends StatelessWidget {
+  final ScrollController controller;
+  final PanelController panelController;
+  final List results;
+
+  const NearbyStops({super.key, required this.controller, required this.results, required this.panelController});
+
+  void togglePanel() => panelController.isPanelOpen
+    ? panelController.close()
+    : panelController.open();
+
+  @override
+  Widget build(BuildContext context) => ListView.builder(
+    controller: controller,
+    itemCount: results.length + 2,
+    itemBuilder: (context, index) {
+      if (index == 0) {
+        return SizedBox(
+          height: 100,
+          width: 100,
+          child: Column(
+            children: [
+              const SizedBox(height: 10,),
+              GestureDetector(
+                onTap: togglePanel,
+                child: Center(
+                  child: Container(
+                    height: 5,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10,),
+              const Text("Results", style: TextStyle(fontSize: 25),),
+              const SizedBox(height: 10,),
+            ],
+          )
+        );
+      }
+      if (index == results.length + 1) {
+        return const SizedBox(height: 100,);
+      }
+      index -= 1;
+
+      ThemeData theme = Theme.of(context);
+      return SizedBox(
+        height: 100,
+        width: 100,
+        child: Card(
+          child: ListTile(
+            // textColor: 
+            title: Text("hi"),
+            subtitle: Text("hi")
           ),
         ),
       );

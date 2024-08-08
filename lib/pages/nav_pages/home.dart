@@ -5,22 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../wrapper/wrapper.dart' as ptv;
-import 'elements/stops.dart';
+import '../../ptv/wrapper.dart' as ptv;
+import '../elements/stops.dart';
+import '../map/map.dart';
+import '../auth/profile.dart';
 
-class NextDeparture extends StatefulWidget {
-  const NextDeparture({super.key});
+
+class Home extends StatefulWidget {
+  const Home({super.key});
   @override
-  State<NextDeparture> createState() => _NextDepartureState();
+  State<Home> createState() => _HomeState();
 
 }
-class _NextDepartureState extends State<NextDeparture> {
+class _HomeState extends State<Home> {
   ptv.Departure? nextDeparture;
   static int counter = 0;
   static String currentStation = "";
   static bool rerequest = false;
   // static ScrollController scrollController = ScrollController();
   static PanelController panelController = PanelController();
+  static Timer? timer;
 
   @override
   void initState() {
@@ -28,13 +32,16 @@ class _NextDepartureState extends State<NextDeparture> {
     currentStation = "laburnum";
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   final Stream<(ptv.Departure, ptv.Pattern)> updateNextDeparture = (() {
     late final StreamController<(ptv.Departure, ptv.Pattern)> controller;
     controller = StreamController<(ptv.Departure, ptv.Pattern)>(
       onListen: () async {
-        log("inital");
-        // final search = await ptv.request(ptv.search("cranbourne"), "");
-        // log(search.toString());
         ptv.Departure? tempnext;
         ptv.Departure next;
         ptv.Departure old;
@@ -49,27 +56,30 @@ class _NextDepartureState extends State<NextDeparture> {
         // scrollController.animateTo((pattern.stops.values.toList().indexOf(pattern.stops[next.stopId]!) * 100), duration: const Duration(seconds: 2), curve: Curves.ease);
         controller.add((next, pattern));
         // ignore: unused_local_variable
-        final timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+        timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+          counter++;
+          if ((counter % 30) == 0) {
+            rerequest = true;
+          }
+          
           if (next.estimatedDeparture != null && ((next.estimatedDeparture!.isBefore(DateTime.now()) || next.estimatedDeparture!.difference(DateTime.now()).inSeconds <= 10) || rerequest)) {
-            log("get next departure");
-            log(currentStation);
             old = next;
             tempnext = await ptv.GetNextDeparture.trainFromStation(currentStation);
-            log("hi");
             if (tempnext == null) {
               controller.addError("Getting next departure failed");
+              log("eror");
               return;
             }
             next = tempnext!;
-            log("hii");
             pattern = await ptv.ServiceFromDeparture.getTrain(next);
-            log("${old.runRef} ${next.runRef}");
             if ((old.runRef != next.runRef) || counter <= 1) {
-              // new departure
-              log("scrolling");
               // scrollController.animateTo((pattern.stops.values.toList().indexOf(pattern.stops[next.stopId]!) * 100), duration: const Duration(seconds: 2), curve: Curves.ease);
             }
             rerequest = false;
+            if (next.estimatedDeparture!.difference(DateTime.now()).inSeconds < 0) {
+              log("neg - ${next.estimatedDeparture!.difference(DateTime.now()).inSeconds}");
+              rerequest = true;
+            }
           }
           controller.add((next, pattern));
         });
@@ -88,15 +98,6 @@ class _NextDepartureState extends State<NextDeparture> {
     Duration expectedTimeTillDeparture;
     String estimatedIn;
 
-    // if (estimatedDeparture == null) {
-    //   return const Center(child: Text("No data"));
-    // }
-
-    counter++;
-    if ((counter % 30) == 0) {
-      rerequest = true;
-    }
-    
     if (estimatedDeparture != null) {
       expectedTimeTillDeparture = estimatedDeparture.difference(DateTime.now());
     } else {
@@ -110,44 +111,24 @@ class _NextDepartureState extends State<NextDeparture> {
       estimatedIn = "${expectedTimeTillDeparture.inMinutes}.${secFormat.format(expectedTimeTillDeparture.inSeconds % (expectedTimeTillDeparture.inMinutes*60))}";
     }
 
-    log("expectedTimeTillDeparture: ${expectedTimeTillDeparture.inSeconds}");
-    log("${pattern.stops.values.toList().indexOf(pattern.stops[dep.stopId]!)} index");
-
-    // return Column(
-    //   children: [
-    //     Text("Counter: $counter"),
-    //     Text("Next Departure: $formatScheduledDeparture to ${pattern.runs.values.first.destinationName}"),
-    //     Text("Estimated to depart in: $estimatedIn"),
-    //     Text("Platform: $platNum, ${pattern.runs.values.first.expressStopCount} stop${pattern.runs.values.first.expressStopCount > 1 ? 's' : ''} skipped"),
-    //     // SizedBox(
-    //     //   height: 200,
-    //     //   width: 200,
-    //     //   child: stops(pattern, dep)
-    //     // )
-    //     ElevatedButton(
-    //       onPressed: () => showModalBottomSheet(
-    //         context: context,
-    //         builder: (context) => stopsSheet(pattern, dep),
-    //       ), 
-    //       // DraggableScrollableSheet(
-    //       //   builder: (context, scrollController) {
-    //       //     return Container(
-    //       //       child: stops(pattern, dep, scrollController),
-    //       //     );
-    //       //   },
-    //       // ),
-    //       child: const Text("test bottom sheet"))
-    //   ]
-    // );
     return SlidingUpPanel(
       controller: panelController,
       minHeight: 100,
-      maxHeight: MediaQuery.of(context).size.height * 0.9,
+      maxHeight: MediaQuery.of(context).size.height * 0.8,
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {setState(() {rerequest = true;});},
-            child: const Text("Reload")
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {setState(() {rerequest = true;});log('reload');},
+                child: const Text("Reload")
+              ),
+              ElevatedButton(
+                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const Map()));},
+                child: const Text("Map")
+              )
+            ],
           ),
           Text("Counter: $counter"),
           Text("Next Departure: $formatScheduledDeparture to ${pattern.runs.values.first.destinationName}"),
@@ -170,26 +151,64 @@ class _NextDepartureState extends State<NextDeparture> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream: updateNextDeparture, builder: (context, snapshot) { 
-      switch (snapshot.connectionState) {
-        case ConnectionState.none:
-          return const Center(child: Text("No data"));
-        case ConnectionState.waiting:
-          log("waiting");
-          return const Center(child: CircularProgressIndicator());
-        case ConnectionState.active:
-          if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          }
-          if (snapshot.hasData) {
-          return departureDetails(snapshot);
-          } else {
+    ThemeData theme = Theme.of(context);
+    Widget avatar = Icon(
+      Icons.person,
+      color: theme.colorScheme.onPrimary,
+      size: 40,
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: theme.colorScheme.primary,
+        toolbarHeight: 100,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Transport App",
+              style: TextStyle(color: theme.colorScheme.onPrimary, fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "hi",
+              style: TextStyle(color: Colors.grey[300]),
+            )
+          ],
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()));
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.grey[800],
+              radius: 35,
+              child: avatar
+            ),
+          ),
+          const SizedBox(width: 20),
+        ],
+      ),
+      body: StreamBuilder(stream: updateNextDeparture, builder: (context, snapshot) { 
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
             return const Center(child: Text("No data"));
+          case ConnectionState.waiting:
+            return const Center(child: CircularProgressIndicator());
+          case ConnectionState.active:
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
+            if (snapshot.hasData) {
+            return departureDetails(snapshot);
+            } else {
+              return const Center(child: Text("No data"));
+            }
+          case ConnectionState.done:
+            return const Center(child: Text("Done (should never see this :D)"));
           }
-        case ConnectionState.done:
-          return const Center(child: Text("Done (should never see this :D)"));
         }
-      }
+      ),
     );
   }
 }
@@ -204,6 +223,6 @@ class TestDetails extends StatefulWidget {
 class _TestDetailsState extends State<TestDetails> {
   @override
   Widget build(BuildContext context) {
-    return const NextDeparture();
+    return const Home();
   }
 }
